@@ -1,3 +1,5 @@
+"html_file Rule"
+
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "COPY_FILE_TO_BIN_TOOLCHAINS", "copy_files_to_bin_actions")
 load("@aspect_bazel_lib//lib:expand_make_vars.bzl", "expand_locations")
 load("@aspect_bazel_lib//lib:lists.bzl", "map")
