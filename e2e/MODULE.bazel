@@ -1,4 +1,7 @@
-module(name = "bzlparty_rules_html_e2e")
+module(
+    name = "bzlparty_rules_html_e2e",
+    version = "0.0.0",
+)
 
 bazel_dep(name = "bazel_skylib", version = "1.5.0")
 bazel_dep(name = "bzlparty_rules_html")

@@ -1,0 +1,54 @@
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
+load("@bzlparty_rules_html//:defs.bzl", "html_file")
+
+html_file(
+    name = "index",
+    out = "index.html",
+    body = [
+        "<p>Hello, World!</p>",
+    ],
+    title = "Hello, World!",
+)
+
+write_file(
+    name = "hello_world_js",
+    out = "hello_world.js",
+    content = [
+        "console.log('Hello, World!');",
+    ],
+)
+
+html_file(
+    name = "index2",
+    out = "index2.html",
+    body = [
+        """<script type="text/javascript" src="$(rootpath :hello_world_js)"></script>""",
+    ],
+    data = [
+        ":hello_world_js",
+    ],
+    title = "Hello, World!",
+)
+
+html_file(
+    name = "index3",
+    out = "index3.html",
+    copy_files_to_bin = True,
+    data = [
+        ":style.css",
+    ],
+    head = [
+        """<link rel="stylesheet" type="text/css" href="$(rootpath :style.css)" />""",
+    ],
+    title = "Hello, World!",
+)
+
+build_test(
+    name = "files",
+    targets = [
+        ":index",
+        ":index2",
+        ":index3",
+    ],
+)
