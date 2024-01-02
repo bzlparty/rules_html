@@ -1,10 +1,10 @@
-# Bazel Rules for target_name
+# Bazel Rules for HTML
 
-[![Test](https://github.com/bzlparty/project_name/actions/workflows/test.yaml/badge.svg?branch=main&event=push)](https://github.com/bzlparty/project_name/actions/workflows/test.yaml)
+[![Test](https://github.com/bzlparty/rules_html/actions/workflows/test.yaml/badge.svg?branch=main&event=push)](https://github.com/bzlparty/rules_html/actions/workflows/test.yaml)
 
 ## Installation
 
-See install instructions on the [release page](https://github.com/bzlparty/project_name/releases).
+See install instructions on the [release page](https://github.com/bzlparty/rules_html/releases).
 
 ## Usage
 

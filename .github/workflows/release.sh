@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 host=$(uname -s)
-NAME=project_name
+NAME=rules_html
 TAG=${GITHUB_REF_NAME}
 VERSION=${TAG:1}
 PREFIX="${NAME}-${VERSION}"
@@ -23,11 +23,11 @@ cat > release_notes.md <<EOF
 ### Install from Git
 
 \`\`\`starlark
-bazel_dep(name = "bzlparty_project_name")
+bazel_dep(name = "bzlparty_rules_html")
 
 git_override(
-    module_name = "bzlparty_project_name",
-    remote = "git@github.com:bzlparty/project_name.git",
+    module_name = "bzlparty_rules_html",
+    remote = "git@github.com:bzlparty/rules_html.git",
     commit = "${GITHUB_SHA}",
 )
 \`\`\`
@@ -35,11 +35,11 @@ git_override(
 ### Install from Archive
 
 \`\`\`starlark
-bazel_dep(name = "bzlparty_project_name")
+bazel_dep(name = "bzlparty_rules_html")
 
 archive_override(
-    module_name = "bzlparty_project_name",
-    urls = "https://github.com/bzlparty/project_name/releases/download/${TAG}/${RULES_ARCHIVE}",
+    module_name = "bzlparty_rules_html",
+    urls = "https://github.com/bzlparty/rules_html/releases/download/${TAG}/${RULES_ARCHIVE}",
     strip_prefix = "${PREFIX}",
     integrity = "sha256-${RULES_SHA}",
 )

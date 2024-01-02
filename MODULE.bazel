@@ -1,5 +1,5 @@
 module(
-    name = "bzlparty_project_name",
+    name = "bzlparty_rules_html",
     version = "0.0.0",
     compatibility_level = 1,
 )
