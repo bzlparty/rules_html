@@ -1,0 +1,3 @@
+load(":html_file.bzl", "html_file_test_suite")
+
+html_file_test_suite()

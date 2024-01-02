@@ -28,7 +28,7 @@ jobs:
           bazel
           --bazelrc=${{ github.workspace }}/.bazelrc
           --bazelrc=${{ github.workspace }}/.github/workflows/ci.bazelrc
-          test //:setup
+          test //:lint
   test:
     needs: ["pre-test"]
     runs-on: ubuntu-latest
