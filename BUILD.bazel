@@ -1,4 +1,7 @@
 load("@buildifier_prebuilt//:rules.bzl", "buildifier", "buildifier_test")
+load("@gazelle//:def.bzl", "gazelle")
+
+gazelle(name = "gazelle")
 
 buildifier(
     name = "format",

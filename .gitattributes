@@ -1,4 +1,5 @@
 *.sh                  export-ignore
 .bazel*               export-ignore
 .git*                 export-ignore
+bundler/artifacts.bzl export-ignore
 e2e                   export-ignore

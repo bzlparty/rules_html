@@ -10,11 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Mount bazel caches
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/bazel
+            ~/.cache/bazel-repo
+          key: bazel-cache-${{ hashFiles('**/BUILD.bazel', '**/*.bzl', 'WORKSPACE') }}
+          restore-keys: bazel-cache-
       - run: .github/workflows/release.sh
       - uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
           files: |
             rules_html-*.tar.gz
+            bundler-*
           body_path: release_notes.md
           fail_on_unmatched_files: true
