@@ -8,8 +8,35 @@ See install instructions on the [release page](https://github.com/bzlparty/rules
 
 ## Usage
 
+Generate an HTML file:
+
+```starlark
+load("@bzlparty_rules_html//:defs.bzl", "html_file")
+
+html_file(
+    name = "index",
+    out = "index.html",
+    body = [
+        "<p>Hello, World!</p>",
+        "<script src=\"$(location :hello_world.js)\"></script>":
+    ],
+    title = "Hello, World!",
+    data = [
+        ":hello_world.js",
+    ],
+)
 ```
-@TODO
+
+Bundle an HTML file:
+
+```starlark
+load("@bzlparty_rules_html//:defs.bzl", "html_bundle")
+
+html_bundle(
+    name = "bundle",
+    out = "bundle.html",
+    endtry_point = ":index.html",
+)
 ```
 
 ## Development
