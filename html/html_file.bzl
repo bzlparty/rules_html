@@ -3,6 +3,7 @@
 load("@aspect_bazel_lib//lib:copy_to_bin.bzl", "COPY_FILE_TO_BIN_TOOLCHAINS", "copy_files_to_bin_actions")
 load("@aspect_bazel_lib//lib:expand_make_vars.bzl", "expand_locations")
 load("@aspect_bazel_lib//lib:lists.bzl", "map")
+load(":provider.bzl", "HtmlInfo")
 
 def _create_location_expander(ctx, targets):
     return lambda i: expand_locations(ctx, i, targets)
@@ -29,6 +30,10 @@ def _html_file_impl(ctx):
     )
 
     return [
+        HtmlInfo(
+            html_file = depset(outputs),
+            deps = depset(files),
+        ),
         DefaultInfo(
             files = depset(outputs),
             runfiles = ctx.runfiles(files = files),
@@ -70,5 +75,6 @@ html_file = rule(
             allow_single_file = True,
         ),
     },
+    provides = [HtmlInfo, DefaultInfo],
     toolchains = COPY_FILE_TO_BIN_TOOLCHAINS,
 )

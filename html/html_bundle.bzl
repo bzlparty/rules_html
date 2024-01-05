@@ -1,25 +1,32 @@
 "html_bundle Rule"
 
+load(":provider.bzl", "HtmlInfo")
+
 def _html_bundle_impl(ctx):
     binary = ctx.toolchains["@bzlparty_rules_html//bundler:toolchain_type"].bundler_info.binary
-    output = ctx.outputs.out
+    outputs = [ctx.outputs.out]
+    inputs = ctx.files.data + [ctx.file.entry_point]
     args = ctx.actions.args()
     args.add("-entry_point", ctx.file.entry_point)
     args.add("-out", ctx.outputs.out)
+
+    if HtmlInfo in ctx.attr.entry_point:
+        inputs.append(*ctx.attr.entry_point[HtmlInfo].deps.to_list())
+
     ctx.actions.run(
-        outputs = [output],
-        inputs = [ctx.file.entry_point] + ctx.files.data,
+        outputs = outputs,
+        inputs = inputs,
         executable = binary,
         arguments = [args],
         mnemonic = "HtmlBundle",
-        progress_message = "Bundle: %s" % output.short_path,
+        progress_message = "Bundle: %s" % ctx.outputs.out.short_path,
     )
 
-    runfiles = ctx.runfiles(files = ctx.files.data)
+    runfiles = ctx.runfiles(files = inputs)
 
     return [
         DefaultInfo(
-            files = depset([output]),
+            files = depset(outputs),
             runfiles = runfiles,
         ),
     ]
@@ -33,6 +40,7 @@ html_bundle = rule(
         "entry_point": attr.label(
             mandatory = True,
             allow_single_file = True,
+            providers = [HtmlInfo, DefaultInfo],
         ),
         "data": attr.label_list(
             default = [],
