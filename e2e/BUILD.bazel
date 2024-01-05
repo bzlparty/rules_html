@@ -1,7 +1,6 @@
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
-load("@bzlparty_rules_html//:defs.bzl", "html_file")
-load("@bzlparty_rules_html//html:html_bundle.bzl", "html_bundle")
+load("@bzlparty_rules_html//:defs.bzl", "html_bundle", "html_file")
 
 html_file(
     name = "page_1",
