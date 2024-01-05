@@ -1,4 +1,5 @@
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@bzlparty_rules_html//:defs.bzl", "html_bundle", "html_file")
 
@@ -67,6 +68,42 @@ html_bundle(
     name = "page_6",
     out = "page_6.html",
     entry_point = ":page_5",
+)
+
+diff_test(
+    name = "page_1_test",
+    file1 = ":page_1.html",
+    file2 = ":page_1_test.html",
+)
+
+diff_test(
+    name = "page_2_test",
+    file1 = ":page_2.html",
+    file2 = ":page_2_test.html",
+)
+
+diff_test(
+    name = "page_3_test",
+    file1 = ":page_3.html",
+    file2 = ":page_3_test.html",
+)
+
+diff_test(
+    name = "page_4_test",
+    file1 = ":page_4.html",
+    file2 = ":page_4_test.html",
+)
+
+diff_test(
+    name = "page_5_test",
+    file1 = ":page_5.html",
+    file2 = ":page_5_test.html",
+)
+
+diff_test(
+    name = "page_6_test",
+    file1 = ":page_6.html",
+    file2 = ":page_6_test.html",
 )
 
 build_test(
