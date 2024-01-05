@@ -1,5 +1,17 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_go//go:def.bzl", "go_binary", "go_library")
 load(":utils.bzl", "generate_artifacts_bzl", "go_binaries")
+
+bzl_library(
+    name = "artifacts",
+    srcs = ["artifacts.bzl"],
+)
+
+bzl_library(
+    name = "extensions",
+    srcs = ["extensions.bzl"],
+    deps = [":artifacts"],
+)
 
 toolchain_type(
     name = "toolchain_type",

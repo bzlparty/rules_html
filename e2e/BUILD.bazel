@@ -67,8 +67,7 @@ html_file(
 html_bundle(
     name = "page_6",
     out = "page_6.html",
-    data = [":hello_world_js"],
-    entry_point = ":page_5.html",
+    entry_point = ":page_5",
 )
 
 build_test(

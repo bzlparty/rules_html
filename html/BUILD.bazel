@@ -1,9 +1,28 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 
 bzl_library(
+    name = "provider",
+    srcs = ["provider.bzl"],
+)
+
+bzl_library(
     name = "html_file",
     srcs = ["html_file.bzl"],
+    visibility = ["//visibility:public"],
     deps = [
+        ":provider.bzl",
+        "@aspect_bazel_lib//lib:copy_to_bin",
+        "@aspect_bazel_lib//lib:expand_make_vars",
+        "@aspect_bazel_lib//lib:lists",
+    ],
+)
+
+bzl_library(
+    name = "html_bundle",
+    srcs = ["html_bundle.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":provider.bzl",
         "@aspect_bazel_lib//lib:copy_to_bin",
         "@aspect_bazel_lib//lib:expand_make_vars",
         "@aspect_bazel_lib//lib:lists",
