@@ -8,6 +8,7 @@ bzl_library(
     deps = [
         "//html:html_bundle",
         "//html:html_file",
+        "//html:provider",
     ],
 )
 

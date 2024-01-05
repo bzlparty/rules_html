@@ -2,6 +2,9 @@
 
 load("//html:html_bundle.bzl", _html_bundle = "html_bundle")
 load("//html:html_file.bzl", _html_file = "html_file")
+load("//html:provider.bzl", _HtmlInfo = "HtmlInfo")
+
+HtmlInfo = _HtmlInfo
 
 html_bundle = _html_bundle
 
