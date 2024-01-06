@@ -40,7 +40,6 @@ html_bundle = rule(
         "entry_point": attr.label(
             mandatory = True,
             allow_single_file = True,
-            providers = [HtmlInfo, DefaultInfo],
         ),
         "data": attr.label_list(
             default = [],
