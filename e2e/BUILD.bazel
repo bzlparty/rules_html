@@ -1,11 +1,10 @@
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
-load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@bzlparty_rules_html//:defs.bzl", "html_bundle", "html_file")
 
 html_file(
-    name = "page_1",
-    out = "page_1.html",
+    name = "page",
+    out = "page.html",
     body = [
         "<p>Hello, World!</p>",
     ],
@@ -21,40 +20,8 @@ write_file(
 )
 
 html_file(
-    name = "page_2",
-    out = "page_2.html",
-    body = [
-        """<script type="text/javascript" src="$(rootpath :hello_world_js)"></script>""",
-    ],
-    data = [
-        ":hello_world_js",
-    ],
-    title = "Hello, World!",
-)
-
-html_file(
-    name = "page_3",
-    out = "page_3.html",
-    copy_files_to_bin = True,
-    data = [
-        ":style.css",
-    ],
-    head = [
-        """<link rel="stylesheet" type="text/css" href="$(rootpath :style.css)" />""",
-    ],
-    title = "Hello, World!",
-)
-
-html_bundle(
-    name = "page_4",
-    out = "page_4.html",
-    data = [":style.css"],
-    entry_point = ":page_3.html",
-)
-
-html_file(
-    name = "page_5",
-    out = "page_5.html",
+    name = "page_with_script",
+    out = "page_with_script.html",
     body = [
         """<script type="text/javascript" src="$(location :hello_world_js)"></script>""",
     ],
@@ -65,56 +32,17 @@ html_file(
 )
 
 html_bundle(
-    name = "page_6",
-    out = "page_6.html",
-    entry_point = ":page_5",
-)
-
-diff_test(
-    name = "page_1_test",
-    file1 = ":page_1.html",
-    file2 = ":page_1_test.html",
-)
-
-diff_test(
-    name = "page_2_test",
-    file1 = ":page_2.html",
-    file2 = ":page_2_test.html",
-)
-
-diff_test(
-    name = "page_3_test",
-    file1 = ":page_3.html",
-    file2 = ":page_3_test.html",
-)
-
-diff_test(
-    name = "page_4_test",
-    file1 = ":page_4.html",
-    file2 = ":page_4_test.html",
-)
-
-diff_test(
-    name = "page_5_test",
-    file1 = ":page_5.html",
-    file2 = ":page_5_test.html",
-)
-
-diff_test(
-    name = "page_6_test",
-    file1 = ":page_6.html",
-    file2 = ":page_6_test.html",
+    name = "bundle",
+    out = "bundle.html",
+    entry_point = ":page_with_script.html",
 )
 
 build_test(
     name = "files",
     targets = [
         ":hello_world_js",
-        ":page_1",
-        ":page_2",
-        ":page_3",
-        ":page_4",
-        ":page_5",
-        ":page_6",
+        ":page",
+        ":page_with_script",
+        ":bundle",
     ],
 )

@@ -3,3 +3,4 @@
 .git*                 export-ignore
 bundler/artifacts.bzl export-ignore
 e2e                   export-ignore
+html/test             export-ignore

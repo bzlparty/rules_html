@@ -1,3 +1,66 @@
-load(":html_file.bzl", "html_file_test_suite")
+load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
+load("//:defs.bzl", "html_bundle", "html_file")
+load(":html_bundle_test.bzl", "html_bundle_test_suite")
+load(":html_file_test.bzl", "html_file_test_suite")
 
-html_file_test_suite()
+html_bundle_test_suite(name = "html_bundle_test")
+
+html_file_test_suite(name = "html_file_test")
+
+write_file(
+    name = "hello_world_js",
+    out = "hello_world.js",
+    content = [
+        "console.log('Hello, World!');",
+    ],
+)
+
+html_file(
+    name = "page",
+    out = "_page.html",
+    body = [
+        "<p>Hello, World!</p>",
+    ],
+    title = "Hello, World!",
+)
+
+html_file(
+    name = "page_with_script",
+    out = "page_with_script.html",
+    body = [
+        """<script type="text/javascript" src="$(location :hello_world_js)"></script>""",
+    ],
+    data = [
+        ":hello_world_js",
+    ],
+    title = "Hello, World!",
+)
+
+html_bundle(
+    name = "bundle",
+    out = "_page_bundle.html",
+    entry_point = ":page_with_script",
+)
+
+diff_test(
+    name = "page_test",
+    file1 = ":page",
+    file2 = ":page.html",
+)
+
+diff_test(
+    name = "bundle_test",
+    file1 = ":bundle",
+    file2 = ":bundle.html",
+)
+
+test_suite(
+    name = "test",
+    tests = [
+        ":bundle_test",
+        ":html_bundle_test",
+        ":html_file_test",
+        ":page_test",
+    ],
+)
