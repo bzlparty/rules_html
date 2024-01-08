@@ -42,7 +42,7 @@ Choose from the options below and put as dependency in your `MODULE.bazel`.
 ### Install from BCR
 
 \`\`\`starlark
-bazel_dep(name = "bzlparty_project_name", version = "${VERSION}")
+bazel_dep(name = "bzlparty_rules_html", version = "${VERSION}")
 \`\`\`
 
 
