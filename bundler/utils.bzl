@@ -3,8 +3,8 @@
 load("@aspect_bazel_lib//lib:lists.bzl", "filter", "map")
 load("@rules_go//go:def.bzl", "go_binary")
 
-_SUPPORTED_PLATFORMS = ["linux", "freebsd", "darwin", "windows"]
-_SUPPORTED_ARCHS = ["amd64"]
+_SUPPORTED_PLATFORMS = ["linux", "freebsd", "netbsd", "darwin", "windows"]
+_SUPPORTED_ARCHS = ["amd64", "arm64"]
 
 def _generate_artifacts_bzl_impl(ctx):
     generator_script = ctx.actions.declare_file("generate_artifacts_bzl.sh")
