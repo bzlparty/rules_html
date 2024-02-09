@@ -1,32 +1,8 @@
 "Bundler module extensions"
 
+load("@bzlparty_tools//lib:github.bzl", "github")
+load("@bzlparty_tools//lib:platforms.bzl", "host_platform")
 load(":artifacts.bzl", "ARTIFACTS", "VERSION")
-
-_ORGA = "https://github.com/bzlparty"
-
-def _github_release_url(project, version, artifact):
-    return "{orga}/{project}/relases/v{version}/download/{artifact}".format(
-        orga = _ORGA,
-        project = project,
-        version = version,
-        artifact = artifact,
-    )
-
-def _find_artifact_and_integrity(ctx, artifacts):
-    return artifacts["%s-%s" % (ctx.os.name, ctx.os.arch)]
-
-def _github(ctx, project):
-    def _download(version, artifact, integrity):
-        ctx.download(
-            output = artifact,
-            url = _github_release_url(project, version, artifact),
-            integrity = integrity,
-            executable = True,
-        )
-
-    return struct(
-        download_from_release = _download,
-    )
 
 BundlerInfo = provider(
     doc = "Bundler infor provider",
@@ -78,23 +54,47 @@ toolchain(
 def _build_file(ctx, content):
     ctx.file("BUILD.bazel", content)
 
-def _bundler_repo_impl(ctx):
+def _setup_bundler_toolchain(ctx):
     if VERSION == "local":
-        _build_file(ctx, _BUILD_FILE.format(
-            binary = "@bzlparty_rules_html//bundler:bin",
-            toolchain_type = "@bzlparty_rules_html//bundler:toolchain_type",
-        ))
+        _bundler_source_toolchain_repo(
+            name = "bundler_toolchain",
+        )
         return
 
-    (artifact, integrity) = _find_artifact_and_integrity(ctx, ARTIFACTS)
-    github = _github(ctx, "rules_html")
-    github.download_from_release(VERSION, artifact, integrity)
-    _build_file(ctx, _BUILD_FILE.format(binary = artifact, toolchain_type = "@bzlparty_rules_html//bundler:toolchain_type"))
+    platform = host_platform(ctx)
+    (artifact, integrity) = ARTIFACTS[platform]
+    _bundler_platform_toolchain_repo(
+        name = "bundler_toolchain",
+        version = VERSION,
+        artifact = artifact,
+        integrity = integrity,
+    )
 
-_bundler_repo = repository_rule(
-    _bundler_repo_impl,
+def _bundler_platform_toolchain_repo_impl(ctx):
+    gh = github(ctx, "rules_html")
+    artifact = ctx.attr.artifact
+    gh.download_binary(VERSION, artifact, integrity = ctx.attr.integrity)
+    _build_file(ctx, _BUILD_FILE.format(
+        binary = artifact,
+        toolchain_type = "@bzlparty_rules_html//bundler:toolchain_type",
+    ))
+
+_bundler_platform_toolchain_repo = repository_rule(
+    _bundler_platform_toolchain_repo_impl,
+    attrs = {
+        "version": attr.string(mandatory = True),
+        "artifact": attr.string(mandatory = True),
+        "integrity": attr.string(mandatory = True),
+    },
+)
+
+_bundler_source_toolchain_repo = repository_rule(
+    implementation = lambda ctx: _build_file(ctx, _BUILD_FILE.format(
+        binary = "@bzlparty_rules_html//bundler:bin",
+        toolchain_type = "@bzlparty_rules_html//bundler:toolchain_type",
+    )),
 )
 
 bundler_extension = module_extension(
-    implementation = lambda _: _bundler_repo(name = "bundler_toolchain"),
+    implementation = lambda ctx: _setup_bundler_toolchain(ctx),
 )
